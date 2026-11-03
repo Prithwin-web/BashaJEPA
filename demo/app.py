@@ -35,7 +35,7 @@ a = ap.parse_args()
 # ------------------------------------------------------------------ model
 dev = "cuda" if torch.cuda.is_available() else "cpu"
 tok = AutoTokenizer.from_pretrained(a.j1)  # includes the <|predictor_k|> tokens added in training
-base = AutoModelForCausalLM.from_pretrained(a.base, dtype=torch.float16 if dev == "cuda" else torch.float32)
+base = AutoModelForCausalLM.from_pretrained(a.base, torch_dtype=torch.float16 if dev == "cuda" else torch.float32)
 base.resize_token_embeddings(len(tok))
 # load B1 first, then J1: each adapter file also stores the embedding table, and J1 was trained with
 # its own <|predictor_1|> row (used by the Meaning-match tab), so J1 must be loaded last
